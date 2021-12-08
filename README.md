@@ -8,7 +8,7 @@ This docker environment provides a base copy of `ros-melodic` along with the fol
 ### Installation
 - Clone this repo wherever.
 - Configure `setup.sh` with the path to your SSH key associated with Space Concordia
-- Run `$ setup.sh` with root priviledges
+- Run `$ bash setup.sh` with root priviledges
 
 ### Using the Environment
 There are several ways to access the terminal in your docker container:
