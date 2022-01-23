@@ -1,9 +1,7 @@
 #!/bin/sh
 
 # Put the path to your ssh key here
-sshpath="~/.ssh/id_ed25519"
-
-thisdir=$(pwd)
+sshpath="/home/jay/.ssh/id_ed25519"
 
 # Creating container and volume
 docker image build .
@@ -22,6 +20,7 @@ echo "source /root/catkin_ws/devel/setup.bash" >> .bashrc
 # The following is only because husky is in this env, can remove for other envs
 echo "export HUSKY_GAZEBO_DESCRIPTION=$(rospack find husky_gazebo)/urdf/description.gazebo.xacro" >> .bashrc
 
+mkdir .ssh
 mkdir -p catkin_ws/src
 docker exec -it SC-Robotics bash -c "cd /root/catkin_ws/ ; 
 source /opt/ros/melodic/setup.bash ; 
@@ -29,10 +28,8 @@ catkin_make -DPYTHON_EXECUTABLE=/usr/bin/python3"
 
 # Add the required stuff for ssh
 docker exec -it SC-Robotics apt-get -y install openssh-server
-cp -r ~/.ssh "$volumedir/"
-
-# Confirm ssh (not strictly necessary)
-docker exec -it SC-Robotics ssh -T git@github.com 
+docker cp $sshpath SC-Robotics:"/root/.ssh/"
+docker cp "$sshpath.pub" SC-Robotics:"/root/.ssh/"
 
 # Clone repos
 docker exec -it SC-Robotics bash -c "cd /root/catkin_ws/src ; 
